@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/outgoing_chat_rect_shape"
+    android:orientation="vertical"
+
+    >
+
+    <TextView
+        android:id="@+id/chat_bubble_text_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="end"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/chat_font_size"
+        android:textStyle="bold"
+        tools:text="Hello world!" />
+
+    <TextView
+        android:id="@+id/chat_bubble_date_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="8dp"
+        android:gravity="end"
+        android:textColor="@color/lightGrey"
+        tools:text="12:13" />
+</LinearLayout>

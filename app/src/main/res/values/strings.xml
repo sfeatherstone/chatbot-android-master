@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ChatBot</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_name">First Name &amp; Last Name</string>
+    <string name="action_sign_in">Login</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_name">This field is not valid</string>
+    <string name="error_existing_user">This user already exists</string>
+    <string name="send">SEND</string>
+    <string name="type_something">Type Something</string>
+    <string name="login_type_your_name">Type your name</string>
+    <string name="logout">Logout</string>
+    <string name="chat_window_pre">Chat - </string>
+</resources>
