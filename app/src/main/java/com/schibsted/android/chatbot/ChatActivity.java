@@ -4,34 +4,39 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.schibsted.android.chatbot.model.ApplicationModel;
 import com.schibsted.android.chatbot.model.ChatMessage;
+import com.schibsted.android.chatbot.ui.SpacesItemDecoration;
 
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private static final String jsonUrl = "https://s3-eu-west-1.amazonaws.com/rocket-interview/chat.json";
+    public static final String jsonUrl = "http://interviewservices.azurewebsites.net/rocket-interview/chat.json";
     private static final String LOWEST_ITEM = "lowestItem";
-    private static ArrayAdapter mAdapter;
     // Construct the data source
     private static ArrayList<ChatMessage> arrayOfMessages = new ArrayList<>();
     private ApplicationModel model;
     private String loggedInUser;
-    private ListView messageListView;
+    private RecyclerView recyclerView;
+    private ChatAdapter recyclerViewAdaptor;
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private int prevLowestItemIndex;
+    private RecyclerView.ItemDecoration dividerItemDecoration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,10 @@ public class ChatActivity extends AppCompatActivity {
             prevLowestItemIndex = 0;
         }
 
-        new FetchChatTask().execute();
+        //new FetchChatTask().execute();
+
+        setupRecycleView();
+        setupChatButton();
 
         // Set the title on screen
         setTitle(getResources().getString(R.string.chat_window_pre) + loggedInUser);
@@ -61,7 +69,9 @@ public class ChatActivity extends AppCompatActivity {
             setSupportActionBar(toolbarView);
         }
 
-        setupChatButton();
+        // Prepare the loader.  Either re-connect with an existing one,
+        // or start a new one.
+        callLoader();
     }
 
     private void setupChatButton() {
@@ -69,7 +79,6 @@ public class ChatActivity extends AppCompatActivity {
         if (sendButton != null) {
             final AppCompatActivity that = this;
             final TextView textView = (TextView) findViewById(R.id.chat_textview);
-            messageListView = (ListView) findViewById(R.id.lvMessages);
 
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,11 +93,12 @@ public class ChatActivity extends AppCompatActivity {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
-                    messageListView.post(new Runnable() {
+                    recyclerView.post(new Runnable() {
                         @Override
                         public void run() {
                             // Select the last row so it will scroll into view...
-                            messageListView.setSelection(mAdapter.getCount() - 1);
+                            //recyclerView.setSelection(mAdapter.getCount() - 1);
+                            recyclerView.scrollToPosition(recyclerViewAdaptor.getItemCount() - 1);
                         }
                     });
 
@@ -100,7 +110,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
-        saveInstanceState.putInt(LOWEST_ITEM, messageListView.getLastVisiblePosition());
+        //saveInstanceState.putInt(LOWEST_ITEM, recyclerView.getLastVisiblePosition());
     }
 
     @Override
@@ -127,23 +137,52 @@ public class ChatActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setupAdapter() {
+    private void setupRecycleView() {
+        recyclerView = (RecyclerView) findViewById(R.id.lvMessages);
+        recyclerView.setHasFixedSize(true);
+
+        recyclerViewLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+
+        dividerItemDecoration = new SpacesItemDecoration(3);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
         // Create the adapter to convert the array to view
-        mAdapter = new ChatAdapter(this, arrayOfMessages);
+        recyclerViewAdaptor = new ChatAdapter(this);
 
         // Attach the adapter to a ListView
-        messageListView.setAdapter(mAdapter);
+        recyclerView.setAdapter(recyclerViewAdaptor);
 
         if (prevLowestItemIndex > 0) {
-            messageListView.post(new Runnable() {
+            recyclerView.post(new Runnable() {
                 @Override
                 public void run() {
                     // Select the last row so it will scroll into view...
-                    messageListView.setSelection(prevLowestItemIndex);
+                    recyclerView.scrollToPosition(prevLowestItemIndex);
                 }
             });
         }
 
+    }
+
+    private void callLoader() {
+        LoaderManager.LoaderCallbacks<ArrayList<ChatMessage>> loaderManager = new LoaderManager.LoaderCallbacks<ArrayList<ChatMessage>>() {
+            @Override
+            public Loader<ArrayList<ChatMessage>> onCreateLoader(int id, Bundle args) {
+                return new ChatLoader(ChatActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<ArrayList<ChatMessage>> loader, ArrayList<ChatMessage> data) {
+                recyclerViewAdaptor.updateData(data);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<ArrayList<ChatMessage>> loader) {
+                recyclerViewAdaptor.updateData(new ArrayList<ChatMessage>());
+            }
+        };
+        getSupportLoaderManager().initLoader(0, null, loaderManager);
     }
 
     private class FetchChatTask extends AsyncTask<Void, Void, ArrayList<ChatMessage>> {
@@ -157,7 +196,8 @@ public class ChatActivity extends AppCompatActivity {
             arrayOfMessages = items;
             //Add in prev messages
             arrayOfMessages.addAll(model.getAdditionalMessages());
-            setupAdapter();
+            //setupRecycleView();
         }
     }
 }
+

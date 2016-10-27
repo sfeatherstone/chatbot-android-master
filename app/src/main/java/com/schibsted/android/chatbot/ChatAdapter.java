@@ -1,47 +1,53 @@
 package com.schibsted.android.chatbot;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.schibsted.android.chatbot.model.ApplicationModel;
 import com.schibsted.android.chatbot.model.ChatMessage;
+import com.schibsted.android.chatbot.ui.RoundedTransformation;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-/**
- * Created by claudiopalumbo on 27/04/2016.
- */
-class ChatAdapter extends ArrayAdapter<ChatMessage> {
-    ChatAdapter(Context context, ArrayList<ChatMessage> messages) {
-        super(context, R.layout.item_message, messages);
+
+class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
+
+    Context context;
+    ArrayList<ChatMessage> messages = new ArrayList<>();
+
+    ChatAdapter(Context context) {
+        this.context = context;
+    }
+
+    void updateData(ArrayList<ChatMessage> data) {
+        this.messages = data;
+        notifyDataSetChanged();
     }
 
     @Override
-    public
-    @NonNull
-    View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        ChatMessage chatMessage = getItem(position);
-
-        ViewHolder holder;
+    public ChatAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_message, parent, false);
-            holder = populateViewHolder(convertView);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
+        return populateViewHolder(v);
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        ChatMessage chatMessage = messages.get(position);
+
+        // - get element from your dataset at this position
+        // - replace the contents of the view with that element
 
         holder.inView.setVisibility(chatMessage.incoming ? VISIBLE : GONE);
         holder.outView.setVisibility(!chatMessage.incoming ? VISIBLE : GONE);
@@ -53,24 +59,28 @@ class ChatAdapter extends ArrayAdapter<ChatMessage> {
             holder.nameTimeIn.setText(chatMessage.userName + " - " + chatMessage.time);
             holder.textIn.setText(chatMessage.message);
 
-            ImageLoader imageLoader = ApplicationModel.getApplicationModel(getContext()).getAvatarLoader();
-            Bitmap bitmap = imageLoader.getMemoryCache().get(chatMessage.userImageUrl);
-            if (bitmap == null) {
-                holder.avatar.setImageBitmap(ApplicationModel.getApplicationModel(getContext()).getUserModel().getPlaceholderImage());
-                imageLoader.displayImage(chatMessage.userImageUrl, holder.avatar);
-            }
+            Picasso.with(context)
+                    .load(chatMessage.userImageUrl)
+                    .placeholder(R.drawable.ic_person_black_24dp)
+                    .transform(new RoundedTransformation(0))
+                    .resize(35, 35)
+                    .into(holder.avatar);
         } else {
             holder.textOut.setText(chatMessage.message);
             holder.timeOut.setText(chatMessage.time);
         }
 
-        // Return the completed view to render on screen
-        return convertView;
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return messages.size();
     }
 
     @NonNull
     private ViewHolder populateViewHolder(View convertView) {
-        ViewHolder holder = new ViewHolder();
+        ViewHolder holder = new ViewHolder(convertView);
         holder.inView = convertView.findViewById(R.id.message_incoming);
         holder.outView = convertView.findViewById(R.id.message_outgoing);
         holder.textIn = (TextView) holder.inView.findViewById(R.id.chat_bubble_text);
@@ -83,7 +93,7 @@ class ChatAdapter extends ArrayAdapter<ChatMessage> {
     }
 
     // View lookup cache
-    private static class ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView textIn;
         TextView nameTimeIn;
         TextView textOut;
@@ -91,5 +101,9 @@ class ChatAdapter extends ArrayAdapter<ChatMessage> {
         ImageView avatar;
         View inView;
         View outView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
     }
 }
