@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.schibsted.android.chatbot.model.ChatMessage;
+import com.schibsted.android.chatbot.data.Chat;
+import com.schibsted.android.chatbot.data.Chats;
 import com.schibsted.android.chatbot.ui.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
@@ -22,13 +23,13 @@ import static android.view.View.VISIBLE;
 class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<ChatMessage> messages = new ArrayList<>();
+    Chats messages = new Chats();
 
     ChatAdapter(Context context) {
         this.context = context;
     }
 
-    void updateData(ArrayList<ChatMessage> data) {
+    void updateData(Chats data) {
         this.messages = data;
         notifyDataSetChanged();
     }
@@ -44,30 +45,30 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ChatMessage chatMessage = messages.get(position);
+        Chat chatMessage = messages.getChats().get(position);
 
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        holder.inView.setVisibility(chatMessage.incoming ? VISIBLE : GONE);
-        holder.outView.setVisibility(!chatMessage.incoming ? VISIBLE : GONE);
+        holder.inView.setVisibility(chatMessage.getIncoming() ? VISIBLE : GONE);
+        holder.outView.setVisibility(!chatMessage.getIncoming() ? VISIBLE : GONE);
 
         // Lookup view for data population
         // Populate the data into the template view using the data object
 
-        if (chatMessage.incoming) {
-            holder.nameTimeIn.setText(chatMessage.userName + " - " + chatMessage.time);
-            holder.textIn.setText(chatMessage.message);
+        if (chatMessage.getIncoming()) {
+            holder.nameTimeIn.setText(chatMessage.getUsername() + " - " + chatMessage.getTime());
+            holder.textIn.setText(chatMessage.getContent());
 
             Picasso.with(context)
-                    .load(chatMessage.userImageUrl)
+                    .load(chatMessage.getUserImageUrl())
                     .placeholder(R.drawable.ic_person_black_24dp)
                     .transform(new RoundedTransformation(0))
                     .resize(35, 35)
                     .into(holder.avatar);
         } else {
-            holder.textOut.setText(chatMessage.message);
-            holder.timeOut.setText(chatMessage.time);
+            holder.textOut.setText(chatMessage.getContent());
+            holder.timeOut.setText(chatMessage.getTime());
         }
 
     }
@@ -75,7 +76,7 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return messages.size();
+        return messages.getChats().size();
     }
 
     @NonNull

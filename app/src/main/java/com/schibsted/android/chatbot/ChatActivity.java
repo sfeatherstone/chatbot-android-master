@@ -18,18 +18,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.schibsted.android.chatbot.data.Chat;
+import com.schibsted.android.chatbot.data.Chats;
 import com.schibsted.android.chatbot.model.ApplicationModel;
-import com.schibsted.android.chatbot.model.ChatMessage;
 import com.schibsted.android.chatbot.ui.SpacesItemDecoration;
 
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
 
-    public static final String jsonUrl = "http://interviewservices.azurewebsites.net/rocket-interview/chat.json";
+    public static final String jsonUrl = "http://samplesofworkserver20170103074058.azurewebsites.net/api/chat";
     private static final String LOWEST_ITEM = "lowestItem";
     // Construct the data source
-    private static ArrayList<ChatMessage> arrayOfMessages = new ArrayList<>();
     private ApplicationModel model;
     private String loggedInUser;
     private RecyclerView recyclerView;
@@ -83,10 +83,11 @@ public class ChatActivity extends AppCompatActivity {
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ChatMessage message = new ChatMessage(textView.getText().toString());
+                    Chat message = new Chat(textView.getText().toString());
                     textView.setText("");
-                    arrayOfMessages.add(message);
-                    model.addMessage(message);
+                    //TODO add message
+                    //arrayOfMessages.add(message);
+                    //model.addMessage(message);
                     // Check if no view has focus:
                     View view = that.getCurrentFocus();
                     if (view != null) {
@@ -166,38 +167,24 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void callLoader() {
-        LoaderManager.LoaderCallbacks<ArrayList<ChatMessage>> loaderManager = new LoaderManager.LoaderCallbacks<ArrayList<ChatMessage>>() {
+        LoaderManager.LoaderCallbacks<Chats> loaderManager = new LoaderManager.LoaderCallbacks<Chats>() {
             @Override
-            public Loader<ArrayList<ChatMessage>> onCreateLoader(int id, Bundle args) {
+            public Loader<Chats> onCreateLoader(int id, Bundle args) {
                 return new ChatLoader(ChatActivity.this);
             }
 
             @Override
-            public void onLoadFinished(Loader<ArrayList<ChatMessage>> loader, ArrayList<ChatMessage> data) {
+            public void onLoadFinished(Loader<Chats> loader, Chats data) {
                 recyclerViewAdaptor.updateData(data);
             }
 
             @Override
-            public void onLoaderReset(Loader<ArrayList<ChatMessage>> loader) {
-                recyclerViewAdaptor.updateData(new ArrayList<ChatMessage>());
+            public void onLoaderReset(Loader<Chats> loader) {
+                recyclerViewAdaptor.updateData(new Chats());
             }
         };
         getSupportLoaderManager().initLoader(0, null, loaderManager);
     }
 
-    private class FetchChatTask extends AsyncTask<Void, Void, ArrayList<ChatMessage>> {
-        @Override
-        protected ArrayList<ChatMessage> doInBackground(Void... params) {
-            return new ChatFetcher().fetchChats(jsonUrl);
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<ChatMessage> items) {
-            arrayOfMessages = items;
-            //Add in prev messages
-            arrayOfMessages.addAll(model.getAdditionalMessages());
-            //setupRecycleView();
-        }
-    }
 }
 

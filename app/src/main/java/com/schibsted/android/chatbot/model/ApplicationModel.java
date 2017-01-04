@@ -7,6 +7,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
+import com.schibsted.android.chatbot.data.Chat;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ public class ApplicationModel {
     static private ApplicationModel instance;
     static private ImageLoader imageLoader;
     private Context context;
-    private ArrayList<ChatMessage> additionalMessages = new ArrayList<>();
+    private ArrayList<Chat> additionalMessages = new ArrayList<>();
 
     private ApplicationModel(Context context) {
         this.context = context;
@@ -51,13 +52,13 @@ public class ApplicationModel {
         return imageLoader;
     }
 
-    public void addMessage(ChatMessage newMessage) {
+    public void addMessage(Chat newMessage) {
         //TODO : In the real world we would send this to a server. And we might want to persist the messages already fetched.
         //TODO : So for this task, refetch the messages from the server each time, and add in what we added - but only keeping added messages in memory
         additionalMessages.add(newMessage);
     }
 
-    public ArrayList<ChatMessage> getAdditionalMessages() {
+    public ArrayList<Chat> getAdditionalMessages() {
         return additionalMessages;
     }
 
