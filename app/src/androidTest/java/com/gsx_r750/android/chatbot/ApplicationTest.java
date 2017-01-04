@@ -1,4 +1,4 @@
-package com.schibsted.android.chatbot;
+package com.gsx_r750.android.chatbot;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

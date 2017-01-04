@@ -1,4 +1,4 @@
-package com.schibsted.android.chatbot;
+package com.gsx_r750.android.chatbot;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.schibsted.android.chatbot.model.ApplicationModel;
+import com.gsx_r750.android.chatbot.model.ApplicationModel;
 
 /**
  * A login screen that offers login via Name & Surname.

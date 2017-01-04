@@ -1,4 +1,4 @@
-package com.schibsted.android.chatbot;
+package com.gsx_r750.android.chatbot;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,12 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.schibsted.android.chatbot.data.Chat;
-import com.schibsted.android.chatbot.data.Chats;
-import com.schibsted.android.chatbot.ui.RoundedTransformation;
+import com.gsx_r750.android.chatbot.data.Chat;
+import com.gsx_r750.android.chatbot.data.Chats;
+import com.gsx_r750.android.chatbot.ui.RoundedTransformation;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;

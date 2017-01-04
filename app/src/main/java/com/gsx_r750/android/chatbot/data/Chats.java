@@ -1,4 +1,4 @@
-package com.schibsted.android.chatbot.data;
+package com.gsx_r750.android.chatbot.data;
 
 /**
  * Created by simonfea on 28/10/2016.

@@ -1,8 +1,7 @@
-package com.schibsted.android.chatbot;
+package com.gsx_r750.android.chatbot;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -18,12 +17,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.schibsted.android.chatbot.data.Chat;
-import com.schibsted.android.chatbot.data.Chats;
-import com.schibsted.android.chatbot.model.ApplicationModel;
-import com.schibsted.android.chatbot.ui.SpacesItemDecoration;
-
-import java.util.ArrayList;
+import com.gsx_r750.android.chatbot.data.Chat;
+import com.gsx_r750.android.chatbot.data.Chats;
+import com.gsx_r750.android.chatbot.model.ApplicationModel;
+import com.gsx_r750.android.chatbot.ui.SpacesItemDecoration;
 
 public class ChatActivity extends AppCompatActivity {
 

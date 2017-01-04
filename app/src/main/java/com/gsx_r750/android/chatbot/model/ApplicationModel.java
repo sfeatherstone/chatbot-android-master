@@ -1,4 +1,4 @@
-package com.schibsted.android.chatbot.model;
+package com.gsx_r750.android.chatbot.model;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,7 +7,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
-import com.schibsted.android.chatbot.data.Chat;
+import com.gsx_r750.android.chatbot.data.Chat;
 
 import java.util.ArrayList;
 

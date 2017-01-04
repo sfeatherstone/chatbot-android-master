@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "com.schibsted.android.chatbot"
+        applicationId "com.gsx_r750.android.com.gsx_r750.chatbot"
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 1

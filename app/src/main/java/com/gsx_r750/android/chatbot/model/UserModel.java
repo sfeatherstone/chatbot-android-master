@@ -1,4 +1,4 @@
-package com.schibsted.android.chatbot.model;
+package com.gsx_r750.android.chatbot.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,7 +10,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.AppCompatDrawableManager;
 import android.text.TextUtils;
 
-import com.schibsted.android.chatbot.R;
+import com.gsx_r750.android.chatbot.R;
 
 import java.util.regex.Pattern;
 

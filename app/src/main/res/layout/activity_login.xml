@@ -21,7 +21,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.schibsted.android.chatbot.LoginActivity">
+        tools:context="com.gsx_r750.android.chatbot.LoginActivity">
 
         <TextView
             android:id="@+id/textView"

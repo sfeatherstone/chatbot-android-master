@@ -1,10 +1,10 @@
-package com.schibsted.android.chatbot;
+package com.gsx_r750.android.chatbot;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.schibsted.android.chatbot.data.ChatAPI;
-import com.schibsted.android.chatbot.data.Chats;
+import com.gsx_r750.android.chatbot.data.ChatAPI;
+import com.gsx_r750.android.chatbot.data.Chats;
 
 import java.io.IOException;
 

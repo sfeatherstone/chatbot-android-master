@@ -1,4 +1,4 @@
-package com.schibsted.android.chatbot.data;
+package com.gsx_r750.android.chatbot.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

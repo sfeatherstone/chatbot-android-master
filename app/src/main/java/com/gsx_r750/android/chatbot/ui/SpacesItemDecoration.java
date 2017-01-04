@@ -1,4 +1,4 @@
-package com.schibsted.android.chatbot.ui;
+package com.gsx_r750.android.chatbot.ui;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
