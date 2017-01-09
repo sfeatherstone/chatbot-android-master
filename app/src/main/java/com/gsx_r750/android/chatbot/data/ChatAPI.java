@@ -32,19 +32,6 @@ public class ChatAPI {
             return builder.build();
         }
     }
-/*
-    private class FooDeserializerFromJsonWithDifferentFields implements JsonDeserializer<Chat> {
-
-        @Override
-        public Chat deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-            JsonObject jObject = jElement.getAsJsonObject();
-            int intValue = jObject.get("valueInt").getAsInt();
-            String stringValue = jObject.get("valueString").getAsString();
-            return new Foo(intValue, stringValue);
-        }
-    }
-*/
 
     public interface API {
         @GET("chat")
